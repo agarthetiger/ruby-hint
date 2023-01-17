@@ -1,0 +1,99 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require 'logger'
+require 'optparse'
+
+# require 'git'
+
+REPO_PATH = '/.hints.d/hints'
+logger = nil
+
+def search_for_file(hint)
+  abs_file_path = filename_from_hint(hint)
+  if File.exists?(abs_file_path)
+    $logger.debug "Found #{abs_file_path}"
+  else
+    $logger.debug "#{abs_file_path} not found"
+  end
+end
+
+def filename_from_hint(hint)
+  File.join(ENV['HOME'], REPO_PATH, "#{hint}.md")
+end
+
+def search_for_text(filename)
+end
+
+def search_for_text(path)
+end
+
+def parse_file_for_sections()
+end
+
+def format_text(lines_of_text)
+end
+
+def display_text(lines_of_text)
+end
+
+def edit_file(filename)
+end
+
+def push_hints()
+end
+
+def fetch_hints()
+end
+
+def edit_flow()
+end
+
+def search_flow()
+  search_for_file(ARGV[0])
+end
+
+def init_hints()
+  # Check folder, create if it doesn't exist
+  hints_folder = File.join(ENV['HOME'], REPO_PATH)
+  Dir.mkdir(hints_folder) if not Dir.exists?(hints_folder)
+
+  # Check for repo, prompt for clone if it's not present
+
+  # Fetch/Pull repo unless we're skipping pull
+
+end
+
+def main()
+  options = {}
+  option_parser = OptionParser.new do |opts|
+    opts.banner = 'Display user-defined hints on the command line.'
+    opts.on '-d', '--debug', 'Increase verbosity for debugging.'
+    opts.on '-e', '--edit', 'Edit a hint. Create the file if it doesn\'t exist.'
+    opts.on '-h', '--help', 'Display the help for this program.'
+    opts.on '-i', '--info', 'Display the current configuration information.'
+    opts.on '-s', '--search', 'Search all hints for the specified text.'
+    opts.on '-v', '--version', 'Display the version information for this program.'
+  end
+  option_parser.parse!(into: options)
+
+  $logger = Logger.new(STDOUT, Logger::DEBUG, datetime_format: ' ', progname: 'hint')
+  $logger.error!() if not options.has_key?(:debug)
+
+  $logger.debug options
+  $logger.debug ARGV
+
+  init_hints()
+
+  # Search or Edit?
+  if options.has_key?(:edit)
+    edit_flow
+  else
+    search_flow
+  end
+
+end
+
+if __FILE__ == $0
+  main()
+end
